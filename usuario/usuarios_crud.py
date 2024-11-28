@@ -77,7 +77,7 @@ def listar_usuarios():
     # Realiza a atualização de todos os usuários marcados para anonimizar
     if ids_para_atualizar:
         cursor.executemany(
-            "UPDATE usuarios SET nome = NULL, email = NULL, senha = NULL WHERE id = %s",
+            "UPDATE usuarios SET nome = NULL, email = NULL, senha = NULL, ativo = 0 WHERE id = %s",
             [(id,) for id in ids_para_atualizar]
         )
         conn.commit()
@@ -100,7 +100,7 @@ def obter_usuario(id):
 
     if historico:
         cursor.execute(
-            "UPDATE usuarios SET nome = NULL, email = NULL, senha = FALSE WHERE id = %s",
+            "UPDATE usuarios SET nome = NULL, email = NULL, senha = FALSE, ativo = 0 WHERE id = %s",
             (id,)
         )
         conn.commit()  # Commit apenas na conexão principal
@@ -163,7 +163,7 @@ def excluir_usuario(id):
         # Atualizar os campos nome e email para NULL, e senha para FALSE
         cursor.execute("""
             UPDATE usuarios 
-            SET nome = NULL, email = NULL, senha = NULL 
+            SET nome = NULL, email = NULL, senha = NULL, ativo = 0
             WHERE id = %s
         """, (id,))
 

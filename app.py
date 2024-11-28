@@ -6,7 +6,6 @@ from usuario.usuarios_crud import (
     obter_usuario,
     atualizar_usuario,
     excluir_usuario,
-    login
 )
 
 from portabilidade.compartilhar_usuario import compartilhar
@@ -77,7 +76,7 @@ def login():
 
         # Verifica se o usuário existe
         cursor.execute(
-            "SELECT id, nome, email FROM usuarios WHERE email = %s AND senha = %s",
+            "SELECT id, nome, email, senha FROM usuarios WHERE email = %s AND senha = %s",
             (email, senha)
         )
         usuario = cursor.fetchone()
@@ -86,7 +85,7 @@ def login():
             print("Email ou senha incorretos.")
             return jsonify({"mensagem": "Email ou senha incorretos"}), 401
 
-        id, nome, email = usuario  # Desempacotamento corrigido
+        id, nome, email, senha = usuario  # Desempacotamento corrigido
 
         # Verifica se o usuário está no histórico de exclusão
         cursor_exclusao.execute(
@@ -98,7 +97,7 @@ def login():
         if historico:
             print("Usuário no histórico de exclusão, bloqueando acesso...")
             cursor.execute(
-                "UPDATE usuarios SET nome = NULL, email = NULL, senha = NULL WHERE id = %s",
+                "UPDATE usuarios SET nome = NULL, email = NULL, senha = NULL, ativo = 0 WHERE id = %s",
                 (id,)
             )
             conn.commit()
@@ -142,6 +141,7 @@ def login():
         return jsonify({
             "id": id,
             "nome": nome,
+            "senha": senha,
             "email": email,
             "mensagem": "Login realizado com sucesso!"
         }), 200
