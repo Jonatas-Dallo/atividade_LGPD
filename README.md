@@ -4,7 +4,7 @@
 
 - Dar pip install -r requirements.tx e depois executar app.py
 
-- dentro da pasta front_basico/front rodar npm install e depois npm start
+- dentro da pasta front_basico rodar npm install e depois npm start
 
 Observação: Rodar py portabilidade_simulacao.py para testar o codigo necessário para terceiros terem os dados do usario compartilhado
 
